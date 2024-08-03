@@ -1,0 +1,5 @@
+package com.mtoh.mtohconnect
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
