@@ -1,19 +1,21 @@
+
+
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mtohconnect/firebase_options.dart';
 
-
-class Loginscreen extends StatefulWidget {
-   Loginscreen({super.key});
+class Registerscreen extends StatefulWidget {
+  const Registerscreen({super.key});
 
   @override
-  State<Loginscreen> createState() => _LoginscreenState();
+  State<Registerscreen> createState() => _RegisterscreenState();
 }
 
-class _LoginscreenState extends State<Loginscreen> {
-  late final TextEditingController _email;
+class _RegisterscreenState extends State<Registerscreen> {
+   late final TextEditingController _email;
 
   late final TextEditingController _password;
 
@@ -36,7 +38,7 @@ class _LoginscreenState extends State<Loginscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("LOGIN HERE"),backgroundColor: Colors.amberAccent,),
+      appBar: AppBar(title: Text("Register new user"),backgroundColor: Colors.amberAccent,),
       body: Column(
             children: [
               TextField(
@@ -64,43 +66,41 @@ class _LoginscreenState extends State<Loginscreen> {
           
               ),
               TextButton(onPressed:  () async{
-                  final email=_email.text;
+                
+                final email=_email.text;
                 final password=_password.text;
-                
-              try{
-                
-                final UserCredential= await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+               try{
+                 final UserCredential= await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
                 print(UserCredential);
-                  final user = FirebaseAuth.instance.currentUser;
+                 final user = FirebaseAuth.instance.currentUser;
                    if(user?.emailVerified ?? false){
              Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
             }else{
             Navigator.of(context).pushNamedAndRemoveUntil('/emailverfication/', (route)=>false);
             }
-              }on FirebaseAuthException catch(e){
-                 if(e.code=='user-not-found'){
-                  print('no User data found ');
-                  
-                 }else if(e.code=='wrong-password'){
-                  print('Wrong password');
-                 }
 
-              }
-              catch(e){
-                print('Something wrong happened');
-              }
         
+               } on FirebaseAuthException catch(e)
+               {
+                if(e.code=='email-already-in-use')
+                print('Email already used try to login or resetpassword');
+                else if(e.code==' weak-password'){
+
+                  print('Password should be at least 6 characters ');
+                }
+               
+               }catch(e){
+                print('sommething went wrong');
+               }
+              
                 
           
               },
-               child: Text('LOGIN')),
-                 
+               child: Text('Register')),
                TextButton(onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route)=>false);
+                Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
 
-               }, child: Text("Not yet registered ? Click to Register"),
-               ),
-
+               }, child: Text("Already registered ? Click to LOGIN"))
             ],
           ),
       
