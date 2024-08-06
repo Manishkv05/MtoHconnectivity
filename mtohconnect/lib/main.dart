@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mtohconnect/UsersList.dart';
 import 'package:mtohconnect/firebase_options.dart';
 import 'package:mtohconnect/loginscreen.dart';
 
 import 'package:mtohconnect/registerscreen.dart';
+import 'package:mtohconnect/verify_email.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +31,14 @@ class MyApp extends StatelessWidget {
       routes: {
         '/register/':(context)=>const Registerscreen(),
         '/login/':(context)=> Loginscreen(),
-        '/emailverfication/':(context)=>emailverfication(),
+        '/emailverfication/':(context)=> emailverfication(),
+        'UserList/':(context)=>Userslist(),
       }
     );
   }
 }
+enum Menuaction {logout}
+
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
@@ -47,8 +52,20 @@ class Homepage extends StatelessWidget {
             
          
             case ConnectionState.done:
-           
-           return Loginscreen();
+              final user = FirebaseAuth.instance.currentUser;
+              if(user!=null){
+              if(user.emailVerified){
+              return const Userslist();
+              }else{
+                // Navigator.of(context).pushAndRemoveUntil('/emailverfication/' as Route<Object?>, (route)=>false);
+                return const emailverfication();
+              }
+              }else{
+                return Loginscreen();
+              
+              }
+            
+          
          
           
           
@@ -59,38 +76,5 @@ class Homepage extends StatelessWidget {
     
         },
         );
-  }
-}
-
-
-class emailverfication extends StatefulWidget {
-  const emailverfication({super.key});
-
-  @override
-  State<emailverfication> createState() => _emailverficationState();
-}
-
-class _emailverficationState extends State<emailverfication> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Mail verfication'),backgroundColor: Colors.amberAccent,),
-      body: Column(children: [  
-        Text('Please verify your Email',style: TextStyle(fontSize: 25),),
-      
-        TextButton(onPressed: () async {
-           final user = FirebaseAuth.instance.currentUser;
-            await user?.sendEmailVerification();
-      
-      
-        }, child: Text('Snd verification link to your email'),),
-         TextButton(onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
-      
-                 }, child: Text("Done verification through the link  ? Click to LOGIN"))
-      
-      
-      ],),
-    );
   }
 }
