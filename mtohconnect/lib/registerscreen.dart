@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mtohconnect/constant/Routes.dart';
 import 'package:mtohconnect/firebase_options.dart';
+import 'package:mtohconnect/utiites/show_error_dialog.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -74,23 +76,26 @@ class _RegisterscreenState extends State<Registerscreen> {
                 print(UserCredential);
                  final user = FirebaseAuth.instance.currentUser;
                    if(user?.emailVerified ?? false){
-             Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
+             Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
             }else{
-            Navigator.of(context).pushNamedAndRemoveUntil('/emailverfication/', (route)=>false);
+            Navigator.of(context).pushNamedAndRemoveUntil(Emailverficationroute, (route)=>false);
             }
 
         
                } on FirebaseAuthException catch(e)
                {
                 if(e.code=='email-already-in-use')
-                print('Email already used try to login or resetpassword');
+                 Showerrordialog(context,'Email already used try to login or resetpassword');  
+               
                 else if(e.code==' weak-password'){
-
-                  print('Password should be at least 6 characters ');
+                 Showerrordialog(context,'Weak password--Password should be at least 6 characters');  
+                 
+                }else{
+                   Showerrordialog(context,e.code);  
                 }
                
                }catch(e){
-                print('sommething went wrong');
+               Showerrordialog(context, e.toString());
                }
               
                 
@@ -98,7 +103,7 @@ class _RegisterscreenState extends State<Registerscreen> {
               },
                child: Text('Register')),
                TextButton(onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
+                Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
 
                }, child: Text("Already registered ? Click to LOGIN"))
             ],

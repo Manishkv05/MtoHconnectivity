@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mtohconnect/UsersList.dart';
+import 'package:mtohconnect/constant/Routes.dart';
 import 'package:mtohconnect/firebase_options.dart';
 import 'package:mtohconnect/loginscreen.dart';
 
@@ -29,10 +30,10 @@ class MyApp extends StatelessWidget {
       ),
       home:  Homepage(),
       routes: {
-        '/register/':(context)=>const Registerscreen(),
-        '/login/':(context)=> Loginscreen(),
-        '/emailverfication/':(context)=> emailverfication(),
-        'UserList/':(context)=>Userslist(),
+        Registerroute:(context)=>const Registerscreen(),
+        Loginroute:(context)=> Loginscreen(),
+        Emailverficationroute:(context)=> emailverfication(),
+        Userlistroute:(context)=>Userslist(),
       }
     );
   }
