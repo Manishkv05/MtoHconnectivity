@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mtohconnect/constant/Routes.dart';
+import 'package:mtohconnect/utiites/show_error_dialog.dart';
 
 
 class Loginscreen extends StatefulWidget {
@@ -74,21 +76,23 @@ class _LoginscreenState extends State<Loginscreen> {
                
                   final user = FirebaseAuth.instance.currentUser;
                    if(user?.emailVerified ?? false){
-            Navigator.of(context).pushNamedAndRemoveUntil('/Userlist/' , (route)=>false);
+            Navigator.of(context).pushNamedAndRemoveUntil(Userlistroute , (route)=>false);
             }else{
-            Navigator.of(context).pushNamedAndRemoveUntil('/emailverfication/', (route)=>false);
+            Navigator.of(context).pushNamedAndRemoveUntil(Emailverficationroute, (route)=>false);
             }
               }on FirebaseAuthException catch(e){
                  if(e.code=='user-not-found'){
-                  print('no User data found ');
-                  
+                 Showerrordialog(context,'User not found');                  
                  }else if(e.code=='wrong-password'){
-                  print('Wrong password');
+               Showerrordialog(context,'Wrong password');  
+                 }else {
+                   Showerrordialog(context,'error: ${e.code}');  
+
                  }
 
               }
               catch(e){
-                print('Something wrong happened');
+                Showerrordialog(context,e.toString());  
               }
         
                 
@@ -97,7 +101,7 @@ class _LoginscreenState extends State<Loginscreen> {
                child: Text('LOGIN')),
                  
                TextButton(onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route)=>false);
+                Navigator.of(context).pushNamedAndRemoveUntil(Registerroute, (route)=>false);
 
                }, child: Text("Not yet registered ? Click to Register"),
                ),

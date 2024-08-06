@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mtohconnect/constant/Routes.dart';
 
 class emailverfication extends StatefulWidget {
   const emailverfication({super.key});
@@ -26,9 +27,9 @@ class _emailverficationState extends State<emailverfication> {
       
         }, child: Text('Snd verification link to your email'),),
          TextButton(onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
       
-                 }, child: Text("Done verification through the link  ? Click to LOGIN"))
+                 }, child: Text("After verification through the link  ? Click to LOGIN"))
       
       
       ],),

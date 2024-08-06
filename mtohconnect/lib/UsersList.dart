@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mtohconnect/constant/Routes.dart';
 import 'package:mtohconnect/main.dart';
 
 class Userslist extends StatefulWidget {
@@ -26,12 +27,12 @@ class _UserslistState extends State<Userslist> {
             bool shouldlogout=await ShowLOgoutDialog(context);
             if(shouldlogout){
              await  FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
+              Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
 
             }
             else
             {
-              Navigator.of(context).pushNamedAndRemoveUntil('/Userlist/', (route)=>false);
+            Navigator.of(context).pop();
             }
 
               // TODO: Handle this case.
