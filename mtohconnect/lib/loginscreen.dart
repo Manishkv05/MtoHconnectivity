@@ -71,9 +71,10 @@ class _LoginscreenState extends State<Loginscreen> {
                 
                 final UserCredential= await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
                 print(UserCredential);
+               
                   final user = FirebaseAuth.instance.currentUser;
                    if(user?.emailVerified ?? false){
-             Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route)=>false);
+            Navigator.of(context).pushNamedAndRemoveUntil('/Userlist/' , (route)=>false);
             }else{
             Navigator.of(context).pushNamedAndRemoveUntil('/emailverfication/', (route)=>false);
             }
