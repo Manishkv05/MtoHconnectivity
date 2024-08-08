@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mtohconnect/constant/Routes.dart';
 import 'package:mtohconnect/main.dart';
+import 'package:mtohconnect/services/auth/auth_servies.dart';
 
 class Userslist extends StatefulWidget {
   const Userslist({super.key});
@@ -22,11 +23,11 @@ class _UserslistState extends State<Userslist> {
         PopupMenuButton<Menuaction>(
           onSelected:(value) async{
           switch(value){
-            
+          
             case Menuaction.logout:
             bool shouldlogout=await ShowLOgoutDialog(context);
             if(shouldlogout){
-             await  FirebaseAuth.instance.signOut();
+             await  Authservies.firrebase().Logout();
               Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
 
             }

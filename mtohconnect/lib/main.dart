@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:mtohconnect/UsersList.dart';
 import 'package:mtohconnect/constant/Routes.dart';
@@ -7,6 +6,7 @@ import 'package:mtohconnect/firebase_options.dart';
 import 'package:mtohconnect/loginscreen.dart';
 
 import 'package:mtohconnect/registerscreen.dart';
+import 'package:mtohconnect/services/auth/auth_servies.dart';
 import 'package:mtohconnect/verify_email.dart';
 
 void main() {
@@ -47,15 +47,15 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+        future: Authservies.firrebase().Initialize(),
         builder: (context, snapshot)  {
           switch (snapshot.connectionState){
             
          
             case ConnectionState.done:
-              final user = FirebaseAuth.instance.currentUser;
+              final user = Authservies.firrebase().currentUser;
               if(user!=null){
-              if(user.emailVerified){
+              if(user.isEmailverified){
               return const Userslist();
               }else{
                 // Navigator.of(context).pushAndRemoveUntil('/emailverfication/' as Route<Object?>, (route)=>false);
