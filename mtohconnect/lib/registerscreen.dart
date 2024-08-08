@@ -75,22 +75,24 @@ class _RegisterscreenState extends State<Registerscreen> {
                  final UserCredential= await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
                 print(UserCredential);
                  final user = FirebaseAuth.instance.currentUser;
-                   if(user?.emailVerified ?? false){
-             Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
-            }else{
+                   if(user?.emailVerified ?? false)
+        
             Navigator.of(context).pushNamedAndRemoveUntil(Emailverficationroute, (route)=>false);
-            }
+            
 
         
                } on FirebaseAuthException catch(e)
                {
                 if(e.code=='email-already-in-use')
-                 Showerrordialog(context,'Email already used try to login or resetpassword');  
+                 Showerrordialog(context,'Email already used try with login/resetpassword');  
                
                 else if(e.code==' weak-password'){
                  Showerrordialog(context,'Weak password--Password should be at least 6 characters');  
                  
-                }else{
+                } else if(e.code=='invalid-email'){
+                  Showerrordialog(context,'Invalid email');
+                }
+                else{
                    Showerrordialog(context,e.code);  
                 }
                
