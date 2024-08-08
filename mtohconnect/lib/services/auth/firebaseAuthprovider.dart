@@ -1,4 +1,6 @@
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mtohconnect/firebase_options.dart';
 import 'package:mtohconnect/services/auth/Authprovider.dart';
 import 'package:mtohconnect/services/auth/auth_exceptions.dart';
 import 'package:mtohconnect/services/auth/auth_exceptions.dart';
@@ -98,6 +100,13 @@ throw GenericException();
     else{
       throw UsernotLoggedInException();
     }
+  }
+  
+  @override
+  Future<void> Initialize()async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
+  
   }
 
 

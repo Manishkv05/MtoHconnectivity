@@ -1,10 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:mtohconnect/services/auth/auth_user.dart';
 import 'package:mtohconnect/services/auth/Authprovider.dart';
+import 'package:mtohconnect/services/auth/firebaseAuthprovider.dart';
 
 class Authservies implements Authprovider { 
   final Authprovider provider;
 
   Authservies(this.provider); 
+
+  factory Authservies.firrebase()=>Authservies(firebaseAuthProvider());
 
 
 
@@ -27,4 +31,7 @@ class Authservies implements Authprovider {
 
   @override
   Future<void> sendEmailVerification()=>provider.sendEmailVerification();
+  
+  @override
+  Future<void> Initialize()=>provider.Initialize();
 }

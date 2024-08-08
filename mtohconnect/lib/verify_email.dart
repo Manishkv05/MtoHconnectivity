@@ -1,9 +1,10 @@
 
 
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mtohconnect/constant/Routes.dart';
+import 'package:mtohconnect/services/auth/auth_servies.dart';
 
 class emailverfication extends StatefulWidget {
   const emailverfication({super.key});
@@ -21,8 +22,8 @@ class _emailverficationState extends State<emailverfication> {
         Text('Verification Email has been sent click on that to get verified',style: TextStyle(fontSize: 25),),
       
         TextButton(onPressed: () async {
-           final user = FirebaseAuth.instance.currentUser;
-            await user?.sendEmailVerification();
+          
+            await Authservies.firrebase().sendEmailVerification();
       
       
         }, child: Text('Click if havent recived verification link yet '),),
@@ -31,7 +32,7 @@ class _emailverficationState extends State<emailverfication> {
       
                  }, child: Text("verified through the link  ? Click here to LOGIN"),),
                  TextButton(onPressed: () async{
-                         await  FirebaseAuth.instance.signOut();
+                         await  Authservies.firrebase().Logout();
               Navigator.of(context).pushNamedAndRemoveUntil(Loginroute, (route)=>false);
                  }, child: Text('reset'))
       

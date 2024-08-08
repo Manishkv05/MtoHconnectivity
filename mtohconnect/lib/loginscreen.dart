@@ -1,9 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mtohconnect/constant/Routes.dart';
+import 'package:mtohconnect/services/auth/auth_exceptions.dart';
+import 'package:mtohconnect/services/auth/auth_servies.dart';
 import 'package:mtohconnect/utiites/show_error_dialog.dart';
 
 
@@ -71,29 +73,25 @@ class _LoginscreenState extends State<Loginscreen> {
                 
               try{
                 
-                final UserCredential= await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+                final UserCredential= Authservies.firrebase().Login;
                 print(UserCredential);
                
-                  final user = FirebaseAuth.instance.currentUser;
-                   if(user?.emailVerified ?? false){
+                  final user = Authservies.firrebase().currentUser;
+                   if(user?.isEmailverified ?? false){
             Navigator.of(context).pushNamedAndRemoveUntil(Userlistroute , (route)=>false);
             }else{
             Navigator.of(context).pushNamedAndRemoveUntil(Emailverficationroute, (route)=>false);
             }
-              }on FirebaseAuthException catch(e){
-                 if(e.code=='user-not-found'){
-                 Showerrordialog(context,'User not found');                  
-                 }else if(e.code=='wrong-password'){
-               Showerrordialog(context,'Wrong password');  
-                 }else {
-                   Showerrordialog(context,'error: ${e.code}');  
-
-                 }
-
+            
+              }on UsernotFound{
+                    Showerrordialog(context,'User not found');
+              }on WrongPassword{
+                  Showerrordialog(context,'Wrong password');  
+              }on GenericException{
+                   Showerrordialog(context,'Something went Wrong: Failed to login!!'); 
               }
-              catch(e){
-                Showerrordialog(context,e.toString());  
-              }
+              
+          
         
                 
           
